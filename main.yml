@@ -1,0 +1,23 @@
+# NOTE01: Be sure to modify your /etc/ansible/hosts file to include your hosts!
+# NOTE02: Be sure to ssh-add private key!
+---
+- hosts: opensuse
+  become: true
+  tasks:
+  - name: Upgrade all installed packages for Debian and Ubuntu
+    apt:
+      name: "*"
+      state: latest
+      update_cache: yes
+      force_apt_get: yes
+    when: ansible_distribution == "Ubuntu" or ansible_distribution == "Debian"
+  - name: Upgrade all installed packages for CentOS
+    yum:
+      name: '*'
+      state: latest
+    when: ansible_distribution == "CentOS"
+  - name: Upgrade all installed packages for openSUSE
+    zypper:
+      name: '*'
+      state: latest
+    when: ansible_distribution == "openSUSE Leap"
